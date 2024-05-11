@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>  
+    <link rel="stylesheet" href="main.css">
+    <title>電卓</title>
+  </head>
+
+<body>
+ <form name="dentaku">
+    <table>
+      <tr>
+         <td colspan="4">
+             <input type="text" class="display" name="display" value="" disabled>
+         </td>
+      </tr>
+
+      <tr>
+         <td><input type="button" value="7" onclick="clickNumber(this)"></td>
+         <td><input type="button" value="8" onclick="clickNumber(this)"></td>
+         <td><input type="button" value="9" onclick="clickNumber(this)"></td>
+         <td><input type="button" value="÷" class="operator" name="div_btn" onclick="clickNumber(this)"></td>
+      </tr>
+      <tr>
+        <td><input type="button" value="4" onclick="clickNumber(this)"></td>
+        <td><input type="button" value="5" onclick="clickNumber(this)"></td>
+        <td><input type="button" value="6" onclick="clickNumber(this)"></td>
+        <td><input type="button" value="×" class="operator" name="multi_btn" onclick="clickNumber(this)" ></td>
+      </tr>
+      <tr>
+        <td><input type="button" value="1" onclick="clickNumber(this)"></td>
+        <td><input type="button" value="2" onclick="clickNumber(this)"></td>
+        <td><input type="button" value="3" onclick="clickNumber(this)"></td>
+        <td><input type="button" value="-" class="operator" onclick="clickNumber(this)"></td>
+      </tr>
+      <tr>
+        <td><input type="button" value="0" name="zero_btn" onclick="clickNumber(this)" ></td>
+        <td><input type="button" value="00" name="zerozero_btn" onclick="clickNumber(this)" ></td>
+        <td><input type="button" value="." onclick="clickNumber(this)"></td>
+        <td><input type="button" value="+" class="operator" onclick="clickNumber(this)"></td>
+      </tr>
+      <tr>
+        <td colspan="2"><input type="button" class="AC" value="AC" onclick="clickNumber(this)"></td>
+        <td colspan="2"><input type="button" class="equal" value="=" onclick="clickNumber(this)"></td>
+      </tr>
+    </table>
+ </form>
+ 
+    <script src="main.js"></script>
+  </body>
+</html>
