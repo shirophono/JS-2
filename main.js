@@ -19,7 +19,6 @@ function clickNumber(btn) {
     }else if (numReg.test(value) === false) {  //数字以外が入力された場合、
         canAddDecimalPoint = true;  //小数点が追加できる
     }
-    
 
     //もし四則演算がクリックされて、且つ(&&)ひとつ前に既に四則演算がクリックされている場合、
     if (operatorReg.test(value) && operatorReg.test(preValue)) {
@@ -29,12 +28,15 @@ function clickNumber(btn) {
 
     //質問部分　allDisplayが反応していないのはなぜか。
     //もし、0をクリックしたとき、
-    if (value =="0"||"00") {
+    if (value =="0"|| value =="00") {
         if (allDisplay =="0") { //0のみの状態の場合なら
             return; //何もしない。
+        }else if ( /^([1-9]|\.)$/.test(preValue) || operatorReg.test(preValue)) { // ひとつ前が、数字,小数点or四則演算だったら、
+            document.dentaku.display.value += btn.value; //ディスプレイに追加する。
         }
+    }
 
-    
+    //0以外の数字がクリックされたとき、クリックする前が0のみの時、その0を消す。
 
     
     if(value == "=") {
@@ -60,4 +62,4 @@ function clickNumber(btn) {
         document.dentaku.zerozero_btn.value = "00";
     }
 }
-}
+
