@@ -69,9 +69,11 @@ function clickNumber(btn) {
         if (operatorReg.test(value)||value =="."){  //その後に四則演算、小数点を押したら、
             allDisplay = document.dentaku.display.value; //そのまま追加
         } else if (numReg.test(value)){       //それ以外（数字）が押されたら、
-            console.log(preValuetwo);// +0の後四則演算か小数点以外の数字を入れた場合のみ反応してる
-            var zero = document.querySelector('zero_btn')
-            zero.remove()  //❼ひとつ前の０を削除する　→ ×できていない
+            // +0の後四則演算か小数点以外の数字を入れた場合のみ反応してる
+            let allDisplay = document.dentaku.display.value;
+            let zero = allDisplay.slice(-1);
+            allDisplay = zero;   //❾sliceを使って新しい文字列を作成し、それを元の変数に再代入する
+            console.log(allDisplay);
             allDisplay = document.dentaku.display.value; //クリックした数字を入れる
         }
     }
@@ -79,6 +81,12 @@ function clickNumber(btn) {
     //preValue =""; ×ひとつ前を削除できない 
     //❼プレバリュー＝削除するメゾットを代入する？remove?　×変数ではなく要素でないといけない？要素の書き方
     //❽.innerHTML = ''　を使ってみる　× 
+
+    //❾sliceを使って新しい文字列を作成し、それを元の変数に再代入する
+    //let name = 'テックアカデミージュニア。';
+    //console.log(name.slice(0, name.length -1)); //テックアカデミージュニア と表示される
+    //console.log(name);  //テックアカデミージュニア。　と表示される
+    //name = name.slice(0, name.length -1); 中身を書き換えたい時
     
     if(value == "=") {
         document.dentaku.display.value = eval(document.dentaku.display.value);
