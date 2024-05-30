@@ -17,7 +17,7 @@ function clickNumber(btn) {
             return; //何もしない。
         }
         canAddDecimalPoint = false; //小数点が追加できない
-    }else if (numReg.test(value) === false) {  //数字以外が入力された場合、
+    }else if (numReg.test(value) === false) {  //数字以外が入力された場合(四則演算)、
         canAddDecimalPoint = true;  //小数点が追加できる
     }
 
@@ -26,7 +26,7 @@ function clickNumber(btn) {
     //❷console.logを使う　/と*をクリックした時だけコンソールが表示されない。
     //❸÷と×表示が変換されていない？　記述の順番を入れ替えてみたが、変わらない。
     //❹÷と×表示が変換されていない？(2) operatorRegに÷と×を足してみた。→できた！
-    //解決済み　→　*と/が認識されてない。
+  
     //もし四則演算がクリックされて、且つ(&&)ひとつ前に既に四則演算がクリックされている場合、
     if (operatorReg.test(value) && operatorReg.test(preValue)) {
         console.log(value);
@@ -53,41 +53,33 @@ function clickNumber(btn) {
             allDisplay = document.dentaku.display.value;  //クリックした数字を入れる。
         }
     }
-    //四則演算の後は01が入力できてしまうのを阻止したい。
-    // }else if(preValue == "0") ひとつ前が0のとき
-    // 01の場合 　ディスプレイに小数点がない、ひとつ前の四則演算の後に小数点がない
-    //ひとつ前の0を消す　document.dentaku.display.value.slice(-1) =""; ?　
-    //❶preValue="" ×(=は空白を一個前に代入するという意味) 
-    //❷document.dentaku.display.value.slice(-1) =""; ×(sliceの使い方が間違っている、sliceは変更を加えない)
-    //❸document.dentaku.display.value.splice(-1,1);　×　(記述が間違っている？)
-    //❹allDisplay.splice(-1,1,""); × 　→constをletに変えてみても×
-    //❺document.dentaku.display.value.splice(-1,1,"");　×
-    // 0.01の場合 ディスプレイに小数点がある、ひとつ前の四則演算の後に小数点がある
-    
-    
-    if (preValuetwo === "+0"){  //❻ディスプレイが四則演算＋０になっている場合、
+
+    let operatorRegzero = operatorReg + "0" ;
+
+    //四則演算の後の0も後に数字が来たら0を消す。小数点や四則演算が来たらそのまま。
+    if (preValuetwo == operatorRegzero){  //❻ディスプレイが四則演算＋０になっている場合、
         if (operatorReg.test(value)||value =="."){  //その後に四則演算、小数点を押したら、
             allDisplay = document.dentaku.display.value; //そのまま追加
-        } else if (numReg.test(value)){       //それ以外（数字）が押されたら、
-            // +0の後四則演算か小数点以外の数字を入れた場合のみ反応してる
-            let allDisplay = document.dentaku.display.value;
-            let zero = allDisplay.slice(-1);
-            allDisplay = zero;   //❾sliceを使って新しい文字列を作成し、それを元の変数に再代入する
-            console.log(allDisplay);
-            allDisplay = document.dentaku.display.value; //クリックした数字を入れる
+        } else if (numReg.test(value)){         //それ以外（数字）が押されたとき、
+            let zero = allDisplay.slice(0,-1);  //「zero」はディスプレイの最後の文字を抜いたもの
+            document.dentaku.display.value = zero; //ディスプレイは「zero」の状態となり、
+            console.log(operatorRegzero);
         }
     }
 
-    //preValue =""; ×ひとつ前を削除できない 
-    //❼プレバリュー＝削除するメゾットを代入する？remove?　×変数ではなく要素でないといけない？要素の書き方
-    //❽.innerHTML = ''　を使ってみる　× 
+    //"+0"　+以外の四則演算にも反応させたい
+    //=== operatorReg."0"  ×
+    //== operatorReg."0"   ×
+    //=== "+0" || "-0" || ×
+    //==="-0" 反応している　→二つ以上だと0を押していないのに前二つが反応して消される？
+    //=== /^(\+|-|\*|\/|\÷|\×)$/ 
+    // 四則演算と０がくっついているという変数を考えてみる　
+    // let operatorRegzero = operatorReg + "0"
 
-    //❾sliceを使って新しい文字列を作成し、それを元の変数に再代入する
-    //let name = 'テックアカデミージュニア。';
-    //console.log(name.slice(0, name.length -1)); //テックアカデミージュニア と表示される
-    //console.log(name);  //テックアカデミージュニア。　と表示される
-    //name = name.slice(0, name.length -1); 中身を書き換えたい時
-    
+
+    //一個前が0のとき、00を2回以上押すと入力されてしまう
+
+
     if(value == "=") {
         document.dentaku.display.value = eval(document.dentaku.display.value);
     } else if(btn.value == "AC") {
@@ -101,7 +93,7 @@ function clickNumber(btn) {
 
         //もし00がクリックされたとき、前回クリックしたボタンが(数値または小数点)ではない場合、
         } else if(btn.value == "00"&& /^([0-9]|\.)$/.test(preValue) === false) {
-            btn.value = "0"; //0とする。
+            return; //0とする。
         }
 
         document.dentaku.display.value += btn.value;
