@@ -54,30 +54,22 @@ function clickNumber(btn) {
         }
     }
 
-    let operatorRegzero = operatorReg + "0" ;
 
     //四則演算の後の0も後に数字が来たら0を消す。小数点や四則演算が来たらそのまま。
-    if (preValuetwo == operatorRegzero){  //❻ディスプレイが四則演算＋０になっている場合、
+    if(preValuetwo == "+0" || preValuetwo == "-0" || preValuetwo == "÷0" ||preValuetwo == "×0") {  //❻ディスプレイが四則演算＋０になっている場合、
         if (operatorReg.test(value)||value =="."){  //その後に四則演算、小数点を押したら、
             allDisplay = document.dentaku.display.value; //そのまま追加
-        } else if (numReg.test(value)){         //それ以外（数字）が押されたとき、
+        } else if (numReg00.test(value)){         //それ以外（数字）が押されたとき、
             let zero = allDisplay.slice(0,-1);  //「zero」はディスプレイの最後の文字を抜いたもの
             document.dentaku.display.value = zero; //ディスプレイは「zero」の状態となり、
-            console.log(operatorRegzero);
+        } else if (value == "00") {
+            return;
         }
     }
 
-    //"+0"　+以外の四則演算にも反応させたい
-    //=== operatorReg."0"  ×
-    //== operatorReg."0"   ×
-    //=== "+0" || "-0" || ×
-    //==="-0" 反応している　→二つ以上だと0を押していないのに前二つが反応して消される？
-    //=== /^(\+|-|\*|\/|\÷|\×)$/ 
-    // 四則演算と０がくっついているという変数を考えてみる　
-    // let operatorRegzero = operatorReg + "0"
-
-
-    //一個前が0のとき、00を2回以上押すと入力されてしまう
+    //四則演算後の0の後、0を押したときは、押せない。
+    //四則演算後の0の後、00を1回押すと[0]になって入力されてしまう、00を2回押すと[00]が通常で入力されてしまう
+    //上のnumRegは00も含まれている、00を押したときは、一個前の0のみを消されて、ひとつ表示されてしまう？ →00はreturnで解決
 
 
     if(value == "=") {
@@ -93,7 +85,7 @@ function clickNumber(btn) {
 
         //もし00がクリックされたとき、前回クリックしたボタンが(数値または小数点)ではない場合、
         } else if(btn.value == "00"&& /^([0-9]|\.)$/.test(preValue) === false) {
-            return; //0とする。
+            btn.value = "0"; //0とする。
         }
 
         document.dentaku.display.value += btn.value;
